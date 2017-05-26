@@ -27,6 +27,6 @@ public class Solution {
         		}
         	}
         }
-        return dp[s.length()][p.length()]
+        return dp[s.length()][p.length()];
     }
 }
