@@ -1,9 +1,12 @@
 pipeline {
   agent any
+  options {
+    timestamps()
+  }
   stages {
-    stage('') {
+    stage('build') {
       steps {
-        sh 'sh \'echo /"enter build stage/" \''
+        sh 'echo /"enter build stage/" '
       }
     }
   }
