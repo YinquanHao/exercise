@@ -9,7 +9,7 @@ pipeline {
     }
     stage('promote') {
       steps {
-        input(message: 'Proceed', id: '8023', ok: 'True')
+        input(message: 'Proceed', id: '8023', ok: 'True',parameters: [choice(name: 'RELEASE_SCOPE', choices: 'patch\nminor\nmajor', description: 'What is the release scope?')])
       }
     }
   }
