@@ -9,7 +9,10 @@ pipeline {
     }
     stage('promote') {
       steps {
-        input(message: 'Proceed', id: '8023', ok: 'True',parameters: [choice(name: 'RELEASE_SCOPE', choices: 'Proceed DB Restore\nDont Proceed DB Restore', description: 'Proceed DB Restore?')])
+        script{
+        	env.DO_RESTORE = input(message: 'Proceed', id: '8023', ok: 'True',parameters: [choice(name: 'RELEASE_SCOPE', choices: 'Proceed DB Restore\nDont Proceed DB Restore', description: 'Proceed DB Restore?')])
+        }
+        echo "${env.DO_RESTORE}"
       }
     }
   }
