@@ -10,10 +10,22 @@ pipeline {
     stage('promote') {
       steps {
         script{
-        	env.DO_RESTORE = input(message: 'Proceed', id: '8023', ok: 'True',parameters: [choice(name: 'RELEASE_SCOPE', choices: 'Proceed DB Restore\nDont Proceed DB Restore', description: 'Proceed DB Restore?')])
+        	try{
+        		env.DO_RESTORE = input(message: 'Proceed', id: '8023', ok: 'True',parameters: [choice(name: 'RELEASE_SCOPE', choices: 'Proceed DB Restore\nDont Proceed DB Restore', description: 'Proceed DB Restore?')])
+        	} catch (exc) {
+        		echo "enter catch"
+        	}
         }
-        echo "${env.DO_RESTORE}"
+        echo "enter ! ${env.DO_RESTORE}"
       }
+    }
+    stage('DB-Restore') {
+    	when{
+    		expression { env.DO_RESTORE == 'Proceed DB Restore' }
+    	}
+    	steps {
+    		echo "DO_RESTOREING"
+    	}
     }
   }
 }
