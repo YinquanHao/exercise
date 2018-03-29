@@ -30,7 +30,7 @@ pipeline {
     		echo "DO_RESTOREING"
     	}
     }
-    Stage('Rest-Job'){
+    stage('Rest-Job'){
     	steps {
     		echo "finish!"
     	}
