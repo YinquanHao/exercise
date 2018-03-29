@@ -11,11 +11,12 @@ pipeline {
       steps {
         script{
         	try{
-        		timeout(time: 3, unit: 'HOURS'){
+        		timeout(time: 3, unit: 'MINUTES'){
         			env.DO_RESTORE = input(message: 'Proceed', id: '8023', ok: 'True',parameters: [choice(name: 'RELEASE_SCOPE', choices: 'Proceed DB Restore\nDont Proceed DB Restore', description: 'Proceed DB Restore?')])
         		}
         	} catch (exc) {
         		echo "enter catch"
+        		env.DO_RESTORE = "Dont Proceed DB Restore"
         	}
         }
         echo "enter ! ${env.DO_RESTORE}"
