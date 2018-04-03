@@ -7,29 +7,25 @@ pipeline {
         sh 'echo /"enter build stage/" '
       }
     }
-    stage('promote') {
-      steps {
-        script{
-        	try{
-        		timeout(time: 3, unit: 'MINUTES'){
-        			env.DO_RESTORE = input(message: 'Proceed to DB-Restore?', id: '8023', ok: 'True')
-        		}
-        		env.DO_RESTORE = "TRUE"
-        	} catch (exc) {
-        		echo "enter catch"
-        		env.DO_RESTORE = "FALSE"
-        	}
-        }
-        echo "enter ! ${env.DO_RESTORE}"
-      }
-    }
+
     stage('DB-Restore') {
-    	when{
-    		expression { env.DO_RESTORE == 'TRUE' }
-    	}
-    	steps {
-    		echo "DO_RESTOREING"
-    	}
+      timeout(time:3, unit: 'MINUTES'){
+        input {
+          message "Restore the database?"
+          ok "Restore"
+          parameters {
+              booleanParam(name: 'SHOULD_RESTORE_DB', defaultValue: false, description: 'Should we restore the database from the appropriate production environment?')
+          }
+        }
+      }
+      when {
+        expression {
+          params.SHOULD_RESTORE_DB == true
+        }
+      }
+      steps {
+        echo "DO_RESTOREING"
+      }
     }
     stage('Rest-Job'){
     	steps {
