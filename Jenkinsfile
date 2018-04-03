@@ -9,7 +9,7 @@ pipeline {
     }
 
     stage('DB-Restore') {
-      timeout(time:3, unit: 'MINUTES'){
+      #timeout(time:3, unit: 'MINUTES'){
         input {
           message "Restore the database?"
           ok "Restore"
@@ -17,7 +17,7 @@ pipeline {
               booleanParam(name: 'SHOULD_RESTORE_DB', defaultValue: false, description: 'Should we restore the database from the appropriate production environment?')
           }
         }
-      }
+      #}
       when {
         expression {
           params.SHOULD_RESTORE_DB == true
