@@ -12,7 +12,7 @@ pipeline {
         script {
           try{
             timeout(time: 3, unit: 'MINUTES'){
-              env.SHOULD_RESTORE_DB = input(message: 'Restore the database?', ok: 'Confirm'
+              env.SHOULD_RESTORE_DB = input(message: 'Restore the database?', ok: 'Confirm')
               }
             env.SHOULD_RESTORE_DB = 'Restore'
             echo "In the try clause ${env.SHOULD_RESTORE_DB}"
