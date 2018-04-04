@@ -12,14 +12,8 @@ pipeline {
         script {
           try{
             timeout(time: 3, unit: 'MINUTES'){
-              env.SHOULD_RESTORE_DB = input {
-                message 'Restore the database?'
-                ok 'Restore'
-                parameters {
-                  choice(name: 'SHOULD_RESTORE_DB', choices: 'Restore\nSkip', description: 'Should we restore the database from the appropriate production environment?')
-                }
+              env.SHOULD_RESTORE_DB = input(message: 'Restore the database?', ok: 'Restore',parameters: [choice(name: 'SHOULD_RESTORE_DB', choices: 'Restore\nSkip', description: 'Should we restore the database from the appropriate production environment?')])
               }
-            }
             echo 'In the try clause ${env.SHOULD_RESTORE_DB}'
           } catch (exc) {
             echo "enter catch"
