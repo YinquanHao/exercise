@@ -9,14 +9,14 @@ pipeline {
     }
     stage('Restore Database') {
       steps {
-        script{
+        script {
           try{
             timeout(time: 3, unit: 'MINUTES'){
               env.SHOULD_RESTORE_DB = input {
                 message 'Restore the database?'
                 ok "Restore"
                 parameters {
-                choice(name: 'SHOULD_RESTORE_DB', choices: 'Restore\nSkip', description: 'Should we restore the database from the appropriate production environment?')
+                  choice(name: 'SHOULD_RESTORE_DB', choices: 'Restore\nSkip', description: 'Should we restore the database from the appropriate production environment?')
                 }
               }
             }
@@ -26,21 +26,22 @@ pipeline {
             env.SHOULD_RESTORE_DB = "Skip"
           }
         }
+        
         echo "enter ! ${env.SHOULD_RESTORE_DB}"
       }
     }
     stage('Database Restore') {
-      when{
+      when {
         environment name: 'SHOULD_RESTORE_DB', value: 'Restore'
       }
       steps {
-        echo "DO_RESTOREING"
+        echo 'DO_RESTOREING'
       }
     }
-    stage('Rest-Job'){
-    	steps {
-    		echo "finish!"
-    	}
+    stage('Rest-Job') {
+      steps {
+        echo 'finish!'
+      }
     }
   }
 }
