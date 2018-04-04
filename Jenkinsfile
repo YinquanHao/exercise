@@ -7,21 +7,31 @@ pipeline {
         sh 'echo /"enter build stage/" '
       }
     }
-
-    stage('DB-Restore') {
-      //timeout(time:3, unit: 'MINUTES'){
-        input {
-          message "Restore the database?"
-          ok "Restore"
-          parameters {
-              booleanParam(name: 'SHOULD_RESTORE_DB', defaultValue: false, description: 'Should we restore the database from the appropriate production environment?')
+    stage('Restore Database') {
+      steps {
+        script{
+          try{
+            timeout(time: 3, unit: 'MINUTES'){
+              env.SHOULD_RESTORE_DB = input {
+                message "Restore the database?"
+                ok "Restore"
+                parameters {
+                choice(name: 'SHOULD_RESTORE_DB', choices: 'Restore\nSkip', description: 'Should we restore the database from the appropriate production environment?')
+                }
+              }
+            }
+            echo 'In the try clause ${env.SHOULD_RESTORE_DB}'
+          } catch (exc) {
+            echo "enter catch"
+            env.SHOULD_RESTORE_DB = "Skip"
           }
         }
-      //}
-      when {
-        expression {
-          params.SHOULD_RESTORE_DB == true
-        }
+        echo "enter ! ${env.SHOULD_RESTORE_DB}"
+      }
+    }
+    stage('Database Restore') {
+      when{
+        environment name: 'SHOULD_RESTORE_DB', value: 'Restore'
       }
       steps {
         echo "DO_RESTOREING"
