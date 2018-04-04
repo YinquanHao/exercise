@@ -12,12 +12,13 @@ pipeline {
         script {
           try{
             timeout(time: 3, unit: 'MINUTES'){
-              env.SHOULD_RESTORE_DB = input(message: 'Restore the database?', ok: 'Restore',parameters: [booleanParam(name: 'SHOULD_RESTORE_DB', defaultValue: false , description: 'Should we restore the database from the appropriate production environment?')])
+              env.SHOULD_RESTORE_DB = input(message: 'Restore the database?', ok: 'Confirm'
               }
-            echo 'In the try clause ${env.SHOULD_RESTORE_DB}'
+            env.SHOULD_RESTORE_DB = 'Restore'
+            echo "In the try clause ${env.SHOULD_RESTORE_DB}"
           } catch (exc) {
             echo "enter catch"
-            env.SHOULD_RESTORE_DB = "Skip"
+            env.SHOULD_RESTORE_DB = 'Skip'
           }
         }
         
